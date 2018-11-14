@@ -1,3 +1,3 @@
-output "address" {
-  value = "${dnsimple_record.web.hostname}"
+output "ip_address" {
+  value = "${azurerm_public_ip.public_ip.ip_address}"
 }

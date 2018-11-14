@@ -1,27 +1,39 @@
-variable "azure_directory" {
-  description = "Your Azure directory."
+variable "resource_group_name" {}
+
+variable "resource_group_location" {
+  default = "West Europe"
 }
 
-variable "azure_subscription" {
-  description = "Your Azure subscription."
+variable "vnet_name" {}
+
+variable "subnet_name" {}
+
+variable "network_security_group_name" {}
+
+variable "network_interface_name" {}
+
+variable "public_ip_name" {
 }
 
-variable "resource_group" {
-  description = "Resource group name to deploy."
+variable "virtual_machine_name" {}
+
+variable "virtual_machine_size" {
+  default = "Standard_DS1_v2"
 }
 
-variable "site_location" {
-  description = "The location for the site deployment."
+variable "admin_user" {
+  default = "jbloggs"
 }
 
-variable "site_name" {
-  description = "The name of the site to deploy."
-}
 
-variable "sku" {
-  description = "The sku of the site."
-}
 
-variable "dnsimple_domain" {
-  description = "The domain we are creating a record for."
-}
+
+
+
+
+
+
+
+
+
+
