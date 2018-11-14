@@ -1,1 +1,1 @@
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](http://localhost:3000)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](http://tfdeploy.z6.web.core.windows.net)
