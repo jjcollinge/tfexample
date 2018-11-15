@@ -129,7 +129,7 @@ resource "azurerm_virtual_machine" "virtual_machine" {
         disable_password_authentication = true
         ssh_keys {
             path     = "/home/${var.admin_user}/.ssh/authorized_keys"
-            key_data = "${file("~/.ssh/id_rsa.pub")}"
+            key_data = "${var.ssh_pub_key}"
         }
     }
 

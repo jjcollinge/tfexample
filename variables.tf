@@ -25,7 +25,8 @@ variable "admin_user" {
   default = "jbloggs"
 }
 
-
+variable "ssh_pub_key" {
+}
 
 
 
