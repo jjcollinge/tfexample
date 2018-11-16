@@ -1,5 +1,14 @@
 provider "azurerm" {}
 
+resource "random_id" "randomId" {
+    keepers = {
+        # Generate a new ID only when a new resource group is defined
+        resource_group = "${azurerm_resource_group.resource_group.name}"
+    }
+
+    byte_length = 8
+}
+
 resource "azurerm_resource_group" "resource_group" {
     name     = "${var.resource_group_name}"
     location = "${var.resource_group_location}"
@@ -10,7 +19,7 @@ resource "azurerm_resource_group" "resource_group" {
 }
 
 resource "azurerm_virtual_network" "vnet" {
-    name                = "${var.vnet_name}"
+    name                = "vnet${random_id.randomId.hex}"
     address_space       = ["10.0.0.0/16"]
     location            = "${azurerm_resource_group.resource_group.location}"
     resource_group_name = "${azurerm_resource_group.resource_group.name}"
@@ -21,14 +30,14 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_subnet" "subnet" {
-    name                 = "${var.subnet_name}"
+    name                 = "subnet${random_id.randomId.hex}"
     resource_group_name  = "${azurerm_resource_group.resource_group.name}"
     virtual_network_name = "${azurerm_virtual_network.vnet.name}"
     address_prefix       = "10.0.1.0/24"
 }
 
 resource "azurerm_public_ip" "public_ip" {
-    name                         = "${var.public_ip_name}"
+    name                         = "pip${random_id.randomId.hex}"
     location                     = "${azurerm_resource_group.resource_group.location}"
     resource_group_name          = "${azurerm_resource_group.resource_group.name}"
     public_ip_address_allocation = "dynamic"
@@ -39,7 +48,7 @@ resource "azurerm_public_ip" "public_ip" {
 }
 
 resource "azurerm_network_security_group" "network_security_group" {
-    name                = "${var.network_security_group_name}"
+    name                = "nsg${random_id.randomId.hex}"
     location            = "${azurerm_resource_group.resource_group.location}"
     resource_group_name = "${azurerm_resource_group.resource_group.name}"
 
@@ -61,13 +70,13 @@ resource "azurerm_network_security_group" "network_security_group" {
 }
 
 resource "azurerm_network_interface" "nic" {
-    name                      = "${var.network_interface_name}"
+    name                      = "nic${random_id.randomId.hex}"
     location                  = "${azurerm_resource_group.resource_group.location}"
     resource_group_name       = "${azurerm_resource_group.resource_group.name}"
     network_security_group_id = "${azurerm_network_security_group.network_security_group.id}"
 
     ip_configuration {
-        name                          = "${var.network_interface_name}-ipconfig"
+        name                          = "ipc${random_id.randomId.hex}"
         subnet_id                     = "${azurerm_subnet.subnet.id}"
         private_ip_address_allocation = "dynamic"
         public_ip_address_id          = "${azurerm_public_ip.public_ip.id}"
@@ -76,15 +85,6 @@ resource "azurerm_network_interface" "nic" {
     tags {
         environment = "Deploy to Azure"
     }
-}
-
-resource "random_id" "randomId" {
-    keepers = {
-        # Generate a new ID only when a new resource group is defined
-        resource_group = "${azurerm_resource_group.resource_group.name}"
-    }
-
-    byte_length = 8
 }
 
 resource "azurerm_storage_account" "storage_account" {
@@ -100,7 +100,7 @@ resource "azurerm_storage_account" "storage_account" {
 }
 
 resource "azurerm_virtual_machine" "virtual_machine" {
-    name                  = "${var.virtual_machine_name}"
+    name                  = "vm${random_id.randomId.hex}"
     location              = "${azurerm_resource_group.resource_group.location}"
     resource_group_name   = "${azurerm_resource_group.resource_group.name}"
     network_interface_ids = ["${azurerm_network_interface.nic.id}"]
@@ -121,7 +121,7 @@ resource "azurerm_virtual_machine" "virtual_machine" {
     }
 
     os_profile {
-        computer_name  = "${var.virtual_machine_name}"
+        computer_name  = "vm${random_id.randomId.hex}"
         admin_username = "${var.admin_user}"
     }
 
