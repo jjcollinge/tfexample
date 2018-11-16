@@ -21,7 +21,7 @@ variable "virtual_machine_size" {
   default = "Standard_DS1_v2"
 }
 
-variable "admin_user" {
+variable "admin_username" {
   default = "jbloggs"
 }
 
